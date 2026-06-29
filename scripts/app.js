@@ -16,6 +16,20 @@ function saveTask(){
     const taskToSave = new Task(title,desc,color,status,date,budget);
     console.log(taskToSave);
 
+    $.ajax({
+        type: "POST",
+        url:API,
+        data: JSON.stringify(taskToSave),
+        contentType:"application/json",
+        success: function(created){
+            console.log(created);
+            displayTask(created);
+        },
+        error: function(err){
+            console.log(err);
+        }
+    })
+
     displayTask(taskToSave);
 
 }
@@ -59,10 +73,31 @@ function displayTask(task){
 function init(){
     console. log("Hello world!")
     $("#btnSave").click(saveTask);
+
     
 
 }
 
 window.onload = init;
 
+function updateTask(){
+    $.ajax({
+        type:"PUT",
+        url:"https://106api-b0bnggbsgnezbzcz.westus3-01.azurewebsites.net/api/task",
+        data:JSON.stringify({
+            title: "hello this is the put method",
+            budget: 159}
+        ),
+
+        contentType:"applicaton/JSON",
+        success:function (response){
+            console.log(response);
+        },
+        error: function (err){
+            console.log(err);
+        }
+
+    })
+
+};
 
