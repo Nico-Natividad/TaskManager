@@ -50,7 +50,7 @@ function loadTask(){
 
 function displayTask(task){
     let display = `
-        <div class="display-card" style="border-color: ${task.color};">
+        <div class ="task" id = "${task.id}"class="display-card" style="border-color: ${task.color};">
     <div class="display-content">
         <h1 class="task-title">${task.title}</h1>
         
@@ -73,13 +73,39 @@ function displayTask(task){
 function init(){
     console. log("Hello world!")
     $("#btnSave").click(saveTask);
-
+    $(".list").on("click","btn-delete",deleteTask)
+    loadTask();
     
 
 }
 
-window.onload = init;
 
+
+
+
+
+function deleteTask(){
+    let  btn = $(this);
+    let taskElement = btn.parent(".task");
+
+    let id = taskElement.attr("id");
+    console.log("the requesting id is :", id)
+
+    $.ajax({
+
+        type: "delete",
+        url: API + "/"+ id,
+        success: function (){
+            taskElement.fadeOut(500, function(){
+                $(this).remove();
+            });
+        },
+        error: function (err){
+            console.log("error");
+
+        }
+    })
+}
 function updateTask(){
     $.ajax({
         type:"PUT",
